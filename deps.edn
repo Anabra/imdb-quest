@@ -1,5 +1,6 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure {:mvn/version "1.11.1"}}
+ :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        io.github.anabra/gavle {:git/sha "416df55aabcb5934e9346909b4a4756cf731de58"}}
  :aliases
  {:run-m {:main-opts ["-m" "anabra.imdb-quest"]}
   :run-x {:ns-default anabra.imdb-quest
@@ -10,8 +11,8 @@
                   ;; since we're building an app uberjar, we do not
                   ;; need deps-deploy for clojars.org deployment:
                   :deps/root "slim"}}
+
           :ns-default build}
   :test {:extra-paths ["test"]
-         :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}
-                      io.github.cognitect-labs/test-runner
-                      {:git/tag "v0.5.0" :git/sha "48c3c67"}}}}}
+         :extra-deps {com.gfredericks/vcr-clj {:mvn/version "0.4.22"}
+                      lambdaisland/kaocha {:mvn/version "1.0.861"}}}}}
