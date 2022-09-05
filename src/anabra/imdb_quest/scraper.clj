@@ -5,7 +5,7 @@
    [clojure.set :as set]
    [clojure.edn :as edn]))
 
-(defn raw-top-movie->standarized-top-movie
+(defn raw-top-movie->std-top-movie
   [raw-top-movie]
   (-> raw-top-movie
       (select-keys
@@ -21,7 +21,7 @@
       (update :imdb-rating-count edn/read-string)
       (update :rank              edn/read-string)))
 
-(defn standardize-award-outcome
+(defn raw-award-outcome->std-award-outcome
   [{:keys [outcomeTitle outcomeCategory outcomeDetails]}]
   {:oscar?  (boolean (re-matches #"(?i)oscar"  outcomeCategory))
    :winner? (boolean (re-matches #"(?i)winner" outcomeTitle))
@@ -29,7 +29,7 @@
 
 (defn event->award-outcomes
   [{:keys [outcomeItems]}]
-  (map standardize-award-outcome outcomeItems))
+  (map raw-award-outcome->std-award-outcome outcomeItems))
 
 (defn events->aggregated-award-outcomes
   [events]
@@ -52,7 +52,7 @@
         {}
         {:default g/log-non-200-error})
        (:items)
-       (map raw-top-movie->standarized-top-movie)))
+       (map raw-top-movie->std-top-movie)))
 
 (defn get-awards!
   [imdb-id]
@@ -79,7 +79,7 @@
   (def std-top-100-movies
     (->> test-data/top-250-movies
          (:items)
-         (map raw-top-movie->standarized-top-movie)
+         (map raw-top-movie->std-top-movie)
          (filter #(<= (:rank %) 100))))
 
   std-top-100-movies
