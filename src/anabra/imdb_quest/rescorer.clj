@@ -41,3 +41,19 @@
 (defn assoc-oscar-score-adjustments
   [std-movies]
   (map assoc-oscar-score-adjustment std-movies))
+
+(defn adjust-scores
+  [std-movies]
+  (->> std-movies
+       assoc-review-score-adjustments
+       assoc-oscar-score-adjustments
+       (map (fn [{:keys [imdb-rating
+                         review-score-adjustment
+                         oscar-score-adjustment]
+                  :as std-movie}]
+              (assoc std-movie
+                     :adjusted-imdb-rating
+                     (->> [imdb-rating review-score-adjustment oscar-score-adjustment]
+                          (map rationalize)
+                          (apply +)
+                          double))))))
