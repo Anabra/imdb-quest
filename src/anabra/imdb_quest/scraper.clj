@@ -1,4 +1,4 @@
-(ns anabra.imdb-quest.client
+(ns anabra.imdb-quest.scraper
   (:require
    [gavle.client :as g]
    [anabra.imdb-quest.test-data :as test-data]
