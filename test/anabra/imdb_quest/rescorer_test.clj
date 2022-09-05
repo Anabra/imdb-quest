@@ -45,7 +45,7 @@
      (let [actual (sut/assoc-review-score-adjustment max-review-count std-movie)]
        (t/is (same/ish? expected actual))))
 
-   "adds penalized score and keeps all other fields"
+   "adds review score adjustment and keeps all other fields"
    300001 {:imdb-rating-count 200000
            :imdb-rating      3.7
            :id               "foobar"
@@ -86,3 +86,74 @@
      :imdb-rating 9.0
      :review-score-adjustment 0
      :num-oscar-wins 2}]))
+
+(t/deftest calc-oscar-score-adjustment
+  (do-template
+   [num-oscar-wins expected]
+   (t/testing (str num-oscar-wins " oscars")
+     (let [actual (sut/calc-oscar-score-adjustment num-oscar-wins)]
+       (t/is (same/ish? expected actual))))
+
+   (- 1) 0
+   0     0
+   1     0.3
+   2     0.3
+   3     0.5
+   4     0.5
+   5     0.5
+   6     1
+   8     1
+   10    1
+   11    1.5
+   13    1.5))
+
+(t/deftest assoc-oscar-score-adjustment
+  (do-template
+   [title std-movie expected]
+   (t/testing title
+     (let [actual (sut/assoc-oscar-score-adjustment std-movie)]
+       (t/is (same/ish? expected actual))))
+
+   "adds oscar score adjustment and keeps all other fields"
+   {:imdb-rating-count 200000
+    :imdb-rating       3.7
+    :id                "foobar"
+    :some-other-field  "asdqwe"
+    :num-oscar-wins    3}
+   {:imdb-rating-count       200000
+    :imdb-rating             3.7
+    :oscar-score-adjustment  0.5
+    :id                      "foobar"
+    :some-other-field        "asdqwe"
+    :num-oscar-wins          3}))
+
+(t/deftest assoc-oscar-score-adjustments
+  (do-template
+   [title std-movies expected]
+   (t/testing title
+     (let [actual (sut/assoc-oscar-score-adjustments std-movies)]
+       (t/is (same/ish? expected actual))))
+
+   "assocs oscar score adjustments to each movie"
+   (take 3 test-data/top-10-std-movies-with-awards)
+   [{:rank 1
+     :title "The Shawshank Redemption"
+     :id "tt0111161"
+     :imdb-rating-count 2635178
+     :imdb-rating 9.2
+     :num-oscar-wins 0
+     :oscar-score-adjustment 0}
+    {:rank 2
+     :title "The Godfather"
+     :id "tt0068646"
+     :imdb-rating-count 1826349
+     :imdb-rating 9.2
+     :num-oscar-wins 3
+     :oscar-score-adjustment 0.5}
+    {:rank 3
+     :title "The Dark Knight"
+     :id "tt0468569"
+     :imdb-rating-count 2606377
+     :imdb-rating 9.0
+     :num-oscar-wins 2
+     :oscar-score-adjustment 0.3}]))

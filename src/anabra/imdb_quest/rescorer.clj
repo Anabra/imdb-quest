@@ -16,3 +16,28 @@
   (let [max-review-count (->> std-movies (map :imdb-rating-count) (apply max))]
     (map #(assoc-review-score-adjustment max-review-count %) std-movies)))
 
+(defn between?
+  "Inclusive range check"
+  [scrutinee lo hi]
+  (when scrutinee
+   (and (<= lo scrutinee)
+        (<= scrutinee hi))))
+
+(defn calc-oscar-score-adjustment
+  [num-oscar-wins]
+  (cond
+    (between? num-oscar-wins 1 2)  0.3
+    (between? num-oscar-wins 3 5)  0.5
+    (between? num-oscar-wins 6 10) 1
+    (< 10 num-oscar-wins)          1.5
+    :else                          0))
+
+(defn assoc-oscar-score-adjustment
+  [{:keys [num-oscar-wins] :as std-movie}]
+  (assoc std-movie
+         :oscar-score-adjustment
+         (calc-oscar-score-adjustment num-oscar-wins)))
+
+(defn assoc-oscar-score-adjustments
+  [std-movies]
+  (map assoc-oscar-score-adjustment std-movies))
