@@ -61,6 +61,18 @@
    {}
    {:default g/log-non-200-error}))
 
+(defn assoc-oscars!
+  [{:keys [id] :as std-movie}]
+  (let [{award-events :items} (get-awards! id)
+        aggregated-awards     (events->aggregated-award-outcomes award-events)
+        num-oscar-wins        (get aggregated-awards {:oscar? true :winner? true} 0)]
+    (assoc std-movie :num-oscar-wins num-oscar-wins)))
+
+(defn get-movies-with-awards!
+  [top-n]
+  (let [top-n-std-movies (->> (get-top-250-movies!)
+                              (filter #(<= (:rank %) top-n)))]
+    (map assoc-oscars! top-n-std-movies)))
 
 (comment
 
@@ -70,6 +82,19 @@
          (map raw-top-movie->standarized-top-movie)
          (filter #(<= (:rank %) 100))))
 
+  std-top-100-movies
+
+  (def ss-red (first std-top-100-movies))
+  (def godfather (second std-top-100-movies))
+
+  ss-red
+  godfather
+
   (events->aggregated-award-outcomes (:items test-data/godfather-awards))
+
+  (def std-top-10-movies-with-oscars (get-movies-with-awards! 10))
+  std-top-10-movies-with-oscars
+
+  (get-movies-with-awards! 2)
 
   "")

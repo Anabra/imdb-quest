@@ -1,5 +1,68 @@
 (ns anabra.imdb-quest.test-data)
 
+
+(def top-10-std-movies-with-awards
+ [{:rank 1,
+   :title "The Shawshank Redemption",
+   :id "tt0111161",
+   :imdb-rating-count 2635178,
+   :imdb-rating 9.2,
+   :num-oscar-wins 0}
+  {:rank 2,
+   :title "The Godfather",
+   :id "tt0068646",
+   :imdb-rating-count 1826349,
+   :imdb-rating 9.2,
+   :num-oscar-wins 3}
+  {:rank 3,
+   :title "The Dark Knight",
+   :id "tt0468569",
+   :imdb-rating-count 2606377,
+   :imdb-rating 9.0,
+   :num-oscar-wins 2}
+  {:rank 4,
+   :title "The Godfather Part II",
+   :id "tt0071562",
+   :imdb-rating-count 1252614,
+   :imdb-rating 9.0,
+   :num-oscar-wins 6}
+  {:rank 5,
+   :title "12 Angry Men",
+   :id "tt0050083",
+   :imdb-rating-count 778119,
+   :imdb-rating 8.9,
+   :num-oscar-wins 0}
+  {:rank 6,
+   :title "Schindler's List",
+   :id "tt0108052",
+   :imdb-rating-count 1336703,
+   :imdb-rating 8.9,
+   :num-oscar-wins 7}
+  {:rank 7,
+   :title "The Lord of the Rings: The Return of the King",
+   :id "tt0167260",
+   :imdb-rating-count 1808683,
+   :imdb-rating 8.9,
+   :num-oscar-wins 11}
+  {:rank 8,
+   :title "Pulp Fiction",
+   :id "tt0110912",
+   :imdb-rating-count 2016884,
+   :imdb-rating 8.8,
+   :num-oscar-wins 1}
+  {:rank 9,
+   :title "The Lord of the Rings: The Fellowship of the Ring",
+   :id "tt0120737",
+   :imdb-rating-count 1831071,
+   :imdb-rating 8.8,
+   :num-oscar-wins 4}
+  {:rank 10,
+   :title "The Good, the Bad and the Ugly",
+   :id "tt0060196",
+   :imdb-rating-count 753017,
+   :imdb-rating 8.8,
+   :num-oscar-wins 0}])
+
 (def godfather-awards
   {:description "Showing all 31 wins and 30 nominations",
    :errorMessage nil,
