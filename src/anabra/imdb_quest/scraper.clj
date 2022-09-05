@@ -72,7 +72,7 @@
   [top-n]
   (let [top-n-std-movies (->> (get-top-250-movies!)
                               (filter #(<= (:rank %) top-n)))]
-    (map assoc-oscars! top-n-std-movies)))
+    (doall (map assoc-oscars! top-n-std-movies))))
 
 (comment
 
