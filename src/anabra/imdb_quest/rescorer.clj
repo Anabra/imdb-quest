@@ -1,19 +1,18 @@
 (ns anabra.imdb-quest.rescorer)
 
-(defn penalize-review-score
-  [max-review-count review-count review-score]
-  (let [diff-100ks (quot (- max-review-count review-count) 100000)
-        deduction  (* diff-100ks 0.1)]
-    (double (- (rationalize review-score) (rationalize deduction)))))
+(defn calc-review-score-adjustment
+  [max-review-count review-count]
+  (let [diff-100ks (quot (- max-review-count review-count) 100000)]
+    (- (* diff-100ks 0.1))))
 
-(defn assoc-penalized-review-score
-  [max-review-count {:keys [imdb-rating imdb-rating-count] :as std-movie}]
+(defn assoc-review-score-adjustment
+  [max-review-count {:keys [imdb-rating-count] :as std-movie}]
   (assoc std-movie
-         :penalized-imdb-rating
-         (penalize-review-score max-review-count imdb-rating-count imdb-rating)))
+         :review-score-adjustment
+         (calc-review-score-adjustment max-review-count imdb-rating-count)))
 
-(defn penalize-review-scores
+(defn assoc-review-score-adjustments
   [std-movies]
   (let [max-review-count (->> std-movies (map :imdb-rating-count) (apply max))]
-    (map #(assoc-penalized-review-score max-review-count %) std-movies)))
+    (map #(assoc-review-score-adjustment max-review-count %) std-movies)))
 
