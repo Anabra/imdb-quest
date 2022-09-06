@@ -4,6 +4,13 @@
    [clojure.set :as set]
    [clojure.edn :as edn]))
 
+(def base-url "https://imdb-api.com/en/API")
+;; NOTE: Could move this to a secret file or a CLI arg, but since the repo is private we can leave it as is
+(def api-key "k_t627mlm8")
+(defn mk-endpoint
+  [endpoint]
+  (str base-url "/" endpoint "/" api-key))
+
 (defn raw-top-movie->std-top-movie
   [raw-top-movie]
   (-> raw-top-movie
@@ -47,7 +54,7 @@
 (defn get-top-250-movies!
   []
   (->> (g/retry-get-with-handlers!
-        "https://imdb-api.com/en/API/Top250Movies/k_t627mlm8"
+        (mk-endpoint "Top250Movies")
         {}
         {:default g/log-non-200-error})
        (:items)
@@ -56,7 +63,7 @@
 (defn get-awards!
   [imdb-id]
   (g/retry-get-with-handlers!
-   (str "https://imdb-api.com/en/API/Awards/k_t627mlm8/" imdb-id)
+   (str (mk-endpoint "Awards") "/" imdb-id)
    {}
    {:default g/log-non-200-error}))
 
