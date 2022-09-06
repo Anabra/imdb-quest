@@ -73,28 +73,3 @@
   (let [top-n-std-movies (->> (get-top-250-movies!)
                               (filter #(<= (:rank %) top-n)))]
     (doall (map assoc-oscars! top-n-std-movies))))
-
-(comment
-
-  (def std-top-100-movies
-    (->> test-data/top-250-movies
-         (:items)
-         (map raw-top-movie->std-top-movie)
-         (filter #(<= (:rank %) 100))))
-
-  std-top-100-movies
-
-  (def ss-red (first std-top-100-movies))
-  (def godfather (second std-top-100-movies))
-
-  ss-red
-  godfather
-
-  (events->aggregated-award-outcomes (:items test-data/godfather-awards))
-
-  (def std-top-10-movies-with-oscars (get-movies-with-awards! 10))
-  std-top-10-movies-with-oscars
-
-  (get-movies-with-awards! 2)
-
-  "")
