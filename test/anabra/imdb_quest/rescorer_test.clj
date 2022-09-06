@@ -194,3 +194,43 @@
      :num-oscar-wins 2
      :oscar-score-adjustment 0.3
      :adjusted-imdb-rating 9.3}]))
+
+(t/deftest rerank-movies
+  (do-template
+   [title std-movies expected]
+   (t/testing title
+     (let [actual (sut/rerank-movies std-movies)]
+       (t/is (same/ish? expected actual))))
+
+   "assocs adjusted scores to each movie"
+   (take 3 test-data/top-10-std-movies-with-awards)
+   [{:adjusted-rank 1
+     :rank 3
+     :title "The Dark Knight"
+     :id "tt0468569"
+     :imdb-rating-count 2606377
+     :imdb-rating 9.0
+     :review-score-adjustment 0
+     :num-oscar-wins 2
+     :oscar-score-adjustment 0.3
+     :adjusted-imdb-rating 9.3}
+    {:adjusted-rank 2
+     :rank 1
+     :title "The Shawshank Redemption"
+     :id "tt0111161"
+     :imdb-rating-count 2635178
+     :imdb-rating 9.2
+     :review-score-adjustment 0
+     :num-oscar-wins 0
+     :oscar-score-adjustment 0
+     :adjusted-imdb-rating 9.2}
+    {:adjusted-rank 3
+     :rank 2
+     :title "The Godfather"
+     :id "tt0068646"
+     :imdb-rating-count 1826349
+     :imdb-rating 9.2
+     :review-score-adjustment (- 0.8)
+     :num-oscar-wins 3
+     :oscar-score-adjustment 0.5
+     :adjusted-imdb-rating 8.9}]))

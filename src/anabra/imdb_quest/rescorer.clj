@@ -57,3 +57,10 @@
                           (map rationalize)
                           (apply +)
                           double))))))
+
+(defn rerank-movies
+  [std-movies]
+  (->> std-movies
+       (adjust-scores)
+       (sort-by (fn [{:keys [adjusted-imdb-rating]}] (- adjusted-imdb-rating)))
+       (map-indexed (fn [ix movie] (assoc movie :adjusted-rank (inc ix))))))
