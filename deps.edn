@@ -1,11 +1,9 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        org.clojure/data.json {:mvn/version "2.4.0"}
         io.github.anabra/gavle {:git/sha "416df55aabcb5934e9346909b4a4756cf731de58"}}
  :aliases
  {:run-m {:main-opts ["-m" "anabra.imdb-quest"]}
-  :run-x {:ns-default anabra.imdb-quest
-          :exec-fn greet
-          :exec-args {:name "Clojure"}}
   :build {:deps {io.github.seancorfield/build-clj
                  {:git/tag "v0.8.2" :git/sha "0ffdb4c"
                   ;; since we're building an app uberjar, we do not

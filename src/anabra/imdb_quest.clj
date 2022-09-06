@@ -1,12 +1,12 @@
 (ns anabra.imdb-quest
-  (:gen-class))
-
-(defn greet
-  "Callable entry point to the application."
-  [data]
-  (println (str "Hello, " (or (:name data) "World") "!")))
+  (:require
+   [anabra.imdb-quest.scraper :as scraper]
+   [anabra.imdb-quest.rescorer :as rescorer]
+   [clojure.data.json :as json]))
 
 (defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (greet {:name (first args)}))
+  [& _args]
+  (let [movies (scraper/get-movies-with-awards! 20)
+        reranked-movies (rescorer/rerank-movies movies)]
+    (-> reranked-movies
+        (json/write *out* {:indent true}))))
