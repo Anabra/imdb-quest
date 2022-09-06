@@ -3,7 +3,7 @@
 (defn calc-review-score-adjustment
   [max-review-count review-count]
   (let [diff-100ks (quot (- max-review-count review-count) 100000)]
-    (- (* diff-100ks 0.1))))
+    (- (rationalize (* diff-100ks 0.1)))))
 
 (defn assoc-review-score-adjustment
   [max-review-count {:keys [imdb-rating-count] :as std-movie}]
@@ -25,12 +25,13 @@
 
 (defn calc-oscar-score-adjustment
   [num-oscar-wins]
-  (cond
-    (between? num-oscar-wins 1 2)  0.3
-    (between? num-oscar-wins 3 5)  0.5
-    (between? num-oscar-wins 6 10) 1
-    (< 10 num-oscar-wins)          1.5
-    :else                          0))
+  (rationalize
+   (cond
+     (between? num-oscar-wins 1 2)  0.3
+     (between? num-oscar-wins 3 5)  0.5
+     (between? num-oscar-wins 6 10) 1
+     (< 10 num-oscar-wins)          1.5
+     :else                          0)))
 
 (defn assoc-oscar-score-adjustment
   [{:keys [num-oscar-wins] :as std-movie}]

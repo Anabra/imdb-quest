@@ -1,7 +1,6 @@
 (ns anabra.imdb-quest.scraper
   (:require
    [gavle.client :as g]
-   [anabra.imdb-quest.test-data :as test-data]
    [clojure.set :as set]
    [clojure.edn :as edn]))
 
