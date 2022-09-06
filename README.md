@@ -2,49 +2,38 @@
 
 ## Installation
 
-Download from https://github.com/anabra/imdb-quest
+The only dependency you need is Docker.
+
+
+Alternatively, if you have `just` and `clojure` installed, you can run the app without a container.
+
+* `just`: https://github.com/casey/just
+* `clojure`: https://clojure.org/guides/install_clojure
+
 
 ## Usage
 
-Run the project directly, via `:exec-fn`:
+### With `Docker`
 
-    $ clojure -X:run-x
-    Hello, Clojure!
+Building the docker image:
+```
+docker build -t imdb-quest:0.1.0 .
+docker tag imdb-quest:0.1.0 imdb-quest:latest
+```
 
-Run the project, overriding the name to be greeted:
+Running the container 
+```
+docker run -i --rm imdb-quest:latest
+```
 
-    $ clojure -X:run-x :name '"Someone"'
-    Hello, Someone!
+### With `clojure` and `just`
 
-Run the project directly, via `:main-opts` (`-m anabra.imdb-quest`):
+Running tests:
+```
+just test
+```
 
-    $ clojure -M:run-m
-    Hello, World!
-
-Run the project, overriding the name to be greeted:
-
-    $ clojure -M:run-m Via-Main
-    Hello, Via-Main!
-
-Run the project's tests (they'll fail until you edit them):
-
-    $ clojure -T:build test
-
-Run the project's CI pipeline and build an uberjar (this will fail until you edit the tests to pass):
-
-    $ clojure -T:build ci
-
-This will produce an updated `pom.xml` file with synchronized dependencies inside the `META-INF`
-directory inside `target/classes` and the uberjar in `target`. You can update the version (and SCM tag)
-information in generated `pom.xml` by updating `build.clj`.
-
-If you don't want the `pom.xml` file in your project, you can remove it. The `ci` task will
-still generate a minimal `pom.xml` as part of the `uber` task, unless you remove `version`
-from `build.clj`.
-
-Run that uberjar:
-
-    $ java -jar target/imdb-quest-0.1.0-SNAPSHOT.jar
-
-If you remove `version` from `build.clj`, the uberjar will become `target/imdb-quest-standalone.jar`.
-
+Running the app:
+```
+just run
+```
